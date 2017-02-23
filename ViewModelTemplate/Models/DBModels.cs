@@ -66,6 +66,16 @@ namespace ViewModelTemplate.Models
         public int? Qty { get; set; }
     }
 
+    [Table("OrdLine_wKey")]
+    public class OrdLine_wKey {
+        [Key]
+        public int Id { get; set; }
+        public string OrdNo { get; set; }
+        public string ProdNo { get; set; }
+        public int? Qty { get; set; }
+    }
+
+
     [Table("Product")]
     public class Product
     {
@@ -84,6 +94,7 @@ namespace ViewModelTemplate.Models
         public DbSet<Employee> employees { get; set; }
         public DbSet<OrderTbl> orders { get; set; }
         public DbSet<OrdLine> orderLines { get; set; }
+        public DbSet<OrdLine_wKey> orderLines_wKey { get; set; }
         public DbSet<Product> products { get; set; }
 
         public System.Data.Entity.DbSet<ViewModelTemplate.Models.CustomerOrders> CustomerOrders { get; set; }

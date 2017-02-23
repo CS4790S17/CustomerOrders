@@ -31,7 +31,7 @@ namespace ViewModelTemplate.Controllers
         public ActionResult getOrderDetails(String ordNo)
         {
             DBRepository dbr = new DBRepository();
-            List <OrderDetails> orderDetails = dbr.getOrderDetailsSQL(ordNo);
+            List <OrderDetails> orderDetails = dbr.getOrderDetailsEF(ordNo);
 
 
             //String message = "Product No: " + orderDetails[0].prodNo + ", Product Name: " + orderDetails[0].product.ProdName;

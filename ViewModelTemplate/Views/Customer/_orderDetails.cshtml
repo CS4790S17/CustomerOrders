@@ -6,10 +6,11 @@
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Order Details for @Model[0].ordNo</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
+            <h4 class="modal-title" id="exampleModalLabel">Order Details for @Model[0].ordNo</h4>
+
         </div>
         <div class="modal-body">
 
@@ -17,8 +18,8 @@
                 <thead>
                 <tr>
                     <th>Product Name</th>
-                    <th>Product Price</th>
-                    <th>Quantity Ordered</th>
+                    <th colspan="2" style="text-align: right">Product Price</th>
+                    <th style="text-align: center">Quantity Ordered</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,8 +27,9 @@
                 {
                     <tr>
                         <td>@orderDetail.product.ProdName</td>
-                        <td>@orderDetail.product.ProdPrice</td>
-                        <td>@Model[0].quantity</td>
+                        <td style="text-align: right">$@orderDetail.product.ProdPrice</td>
+                        <td></td>
+                        <td style="text-align: center">@Model[0].quantity</td>
                     </tr>
                 }
                 </tbody>
