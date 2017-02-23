@@ -4,7 +4,30 @@
     ViewBag.Title = "orders";
 }
 
-<h2>Customer Orders</h2>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+     data-url='@Url.Action("getOrderDetails"@*, new {ordNo = "21"}*@)'>
+    
+    @*<div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>*@
+</div>
+
+<h2>Customer Orders @*<button class="btn btn-default" id="btn_testShowModal">Show Modal</button>*@</h2>
 
 <div class="container">
     <div class="col-md-3">
@@ -24,6 +47,7 @@
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdNo)</th>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdDate)</th>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdName)</th>
+                <th></th>
             </tr>
             @foreach (var item in Model.orders)
             {
@@ -39,6 +63,9 @@
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
                     </td>
+                    <td>
+                        <button class="btn btn-default btn-sm" id="btn_showOrdDetails_@item.OrdNo">View Details</button>
+                    </td>
                 </tr>
             }
         </table>
@@ -50,3 +77,30 @@
     @*Html.ActionLink("Edit", "Edit", new { id = Model.custNo }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+
+<script>
+
+    $(function () {
+
+        
+    });
+
+    $(":button").click(function () {
+
+        var ordNo = $(this).attr('id').split('_').pop();
+
+        var url = $('#myModal').data('url');
+        url += "?ordNo=" + ordNo;
+
+
+        $.get(url,
+            function(data) {
+                $('#myModal').html(data);
+
+
+                $('#myModal').modal('show');
+            });
+
+    });
+</script>

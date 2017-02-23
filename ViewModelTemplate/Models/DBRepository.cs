@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Web;
 using ViewModelTemplate.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 
 namespace ViewModelTemplate.Models
@@ -62,6 +63,60 @@ namespace ViewModelTemplate.Models
             } catch (Exception ex) { Console.WriteLine(ex.Message); }
             return customerOrders;
         }
+
+
+        /***** Use SQL to get the Order Details *****/
+        public List<OrderDetails> getOrderDetailsSQL(string ordNo) {
+
+            //http://stackoverflow.com/questions/23153260/entity-framework-the-sqlparameter-is-already-contained-by-another-sqlparameter
+            //**SqlQuery does not return a query result until you use a linq extension like any(), tolist().....on the other hand when you 
+            //    use SqlQuery, the result is an IEnumerable when you use any(), tolist(), first() it's converted to a result
+
+
+           List <OrderDetails> orderDetails = new List<OrderDetails>();
+            OrderEntryDbContext db = new OrderEntryDbContext();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+
+            sqlParams.Add(new SqlParameter("@OrdNo", ordNo));
+
+            try {
+                string sql = "SELECT * FROM OrdLine WHERE OrdNo = @OrdNo";
+                List<OrdLine> orderLines =  db.orderLines.SqlQuery(sql, sqlParams.ToArray()).ToList();
+
+                foreach (OrdLine ordLine in orderLines)
+                {
+                    string prodNo = ordLine.ProdNo;
+
+                    sqlParams.Clear();
+                    sqlParams.Add(new SqlParameter("@ProdNo", prodNo));
+
+                    sql = "SELECT * FROM Product WHERE ProdNo = @ProdNo";
+                    Product theProduct = db.products.SqlQuery(sql, sqlParams.ToArray()).First();
+
+                    orderDetails.Add(new OrderDetails()
+                    {
+                        ordNo = ordNo,
+                        prodNo = ordLine.ProdNo,
+                        product = theProduct,
+                        quantity = (int)ordLine.Qty
+                    });
+                }
+
+               
+
+                //customerOrders.customer =
+                //    db.customers.SqlQuery(sql, sqlParams.ToArray()).First();
+                //sqlParams.Clear();
+                //sqlParams.Add(new SqlParameter("@CustNo", custNo));
+                //sql = "SELECT * FROM OrderTbl WHERE CustNo = @CustNo";
+                //customerOrders.orders =
+                //    db.orders.SqlQuery(sql, sqlParams.ToArray()).ToList();
+            } catch (Exception ex) { Console.WriteLine(ex.Message); }
+            return orderDetails;
+        }
+
+
+
     }
     /***************** View Models **********************/
 
@@ -77,6 +132,21 @@ namespace ViewModelTemplate.Models
         public string custNo { get; set; }
         public Customer customer { get; set; }
         public List<OrderTbl> orders { get; set; }
+    }
+
+
+    public class OrderDetails {
+        public OrderDetails() {
+            this.product = new Product();
+        }
+
+        [Key]
+        public string ordNo { get; set; }
+        [Key]
+        public string prodNo { get; set; }
+
+        public int quantity { get; set; }
+        public Product product { get; set; }
     }
 
 }
