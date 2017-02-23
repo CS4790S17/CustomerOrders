@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Web;
 using ViewModelTemplate.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 
@@ -65,6 +66,39 @@ namespace ViewModelTemplate.Models
         }
 
 
+
+        /***** Use EF to get the order details *****/
+        public List<OrderDetails> getOrderDetailsEF(string ordNo) {
+            List<OrderDetails> orderDetails = new List<OrderDetails>();
+            OrderEntryDbContext db = new OrderEntryDbContext();
+            try
+            {
+                var query = (from ol in db.orderLines_wKey where ol.OrdNo == ordNo select ol);
+                List<OrdLine_wKey> orderLines = query.ToList();
+
+                foreach (OrdLine_wKey ordLine in orderLines)
+                {
+                    string prodNo = ordLine.ProdNo;
+
+                    var query2 = (from p in db.products where p.ProdNo == prodNo select p);
+                    Product theProduct = query2.ToList().First();
+
+                    orderDetails.Add(new OrderDetails() {
+                        ordNo = ordNo,
+                        prodNo = ordLine.ProdNo,
+                        product = theProduct,
+                        quantity = (int)ordLine.Qty
+                    });
+                }
+                //customerOrders.customer = db.customers.Find(custNo);
+                //var query = (from ot in db.orders where ot.CustNo == custNo select ot);
+                //customerOrders.orders = query.ToList();
+            } catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+            return orderDetails;
+        }
+
+
         /***** Use SQL to get the Order Details *****/
         public List<OrderDetails> getOrderDetailsSQL(string ordNo) {
 
@@ -80,10 +114,10 @@ namespace ViewModelTemplate.Models
             sqlParams.Add(new SqlParameter("@OrdNo", ordNo));
 
             try {
-                string sql = "SELECT * FROM OrdLine WHERE OrdNo = @OrdNo";
-                List<OrdLine> orderLines =  db.orderLines.SqlQuery(sql, sqlParams.ToArray()).ToList();
+                string sql = "SELECT * FROM OrdLine WHERE OrdNo = @OrdNo AND ProdNo LIKE 'P%'";
+                List<OrdLine_wKey> orderLines =  db.orderLines_wKey.SqlQuery(sql, sqlParams.ToArray()).ToList();
 
-                foreach (OrdLine ordLine in orderLines)
+                foreach (OrdLine_wKey ordLine in orderLines)
                 {
                     string prodNo = ordLine.ProdNo;
 
