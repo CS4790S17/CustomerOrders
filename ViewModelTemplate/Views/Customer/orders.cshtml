@@ -64,7 +64,10 @@
                         @Html.DisplayFor(Modelitem => item.OrdName)
                     </td>
                     <td>
-                        <button class="btn btn-default btn-sm" id="btn_showOrdDetails_@item.OrdNo">View Details</button>
+                        <a style="cursor:pointer" id="a_showOrdDetails_@item.OrdNo">View Details</a>
+                        @*http://stackoverflow.com/questions/1830927/how-do-i-make-a-link-that-goes-no-where*@
+
+                        @*<button class="btn btn-default btn-sm" id="btn_showOrdDetails_@item.OrdNo">View Details</button>*@
                     </td>
                 </tr>
             }
@@ -86,8 +89,7 @@
         
     });
 
-    $(":button").click(function () {
-
+    $("a").click(function () {
         var ordNo = $(this).attr('id').split('_').pop();
 
         var url = $('#myModal').data('url');

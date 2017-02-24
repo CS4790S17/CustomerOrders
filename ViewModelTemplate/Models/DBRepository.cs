@@ -73,10 +73,10 @@ namespace ViewModelTemplate.Models
             OrderEntryDbContext db = new OrderEntryDbContext();
             try
             {
-                var query = (from ol in db.orderLines_wKey where ol.OrdNo == ordNo select ol);
-                List<OrdLine_wKey> orderLines = query.ToList();
+                var query = (from ol in db.orderLines where ol.OrdNo == ordNo select ol);
+                List<OrdLine> orderLines = query.ToList();
 
-                foreach (OrdLine_wKey ordLine in orderLines)
+                foreach (OrdLine ordLine in orderLines)
                 {
                     string prodNo = ordLine.ProdNo;
 
@@ -114,10 +114,10 @@ namespace ViewModelTemplate.Models
             sqlParams.Add(new SqlParameter("@OrdNo", ordNo));
 
             try {
-                string sql = "SELECT * FROM OrdLine WHERE OrdNo = @OrdNo AND ProdNo LIKE 'P%'";
-                List<OrdLine_wKey> orderLines =  db.orderLines_wKey.SqlQuery(sql, sqlParams.ToArray()).ToList();
+                string sql = "SELECT * FROM OrdLine WHERE OrdNo = @OrdNo";
+                List<OrdLine> orderLines =  db.orderLines.SqlQuery(sql, sqlParams.ToArray()).ToList();
 
-                foreach (OrdLine_wKey ordLine in orderLines)
+                foreach (OrdLine ordLine in orderLines)
                 {
                     string prodNo = ordLine.ProdNo;
 
@@ -174,9 +174,7 @@ namespace ViewModelTemplate.Models
             this.product = new Product();
         }
 
-        [Key]
         public string ordNo { get; set; }
-        [Key]
         public string prodNo { get; set; }
 
         public int quantity { get; set; }

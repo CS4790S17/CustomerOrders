@@ -61,7 +61,10 @@ namespace ViewModelTemplate.Models
     public class OrdLine
     {
         [Key]
+        [Column(Order = 1)]
         public string OrdNo { get; set; }
+        [Key]
+        [Column(Order = 2)]
         public string ProdNo { get; set; }
         public int? Qty { get; set; }
     }

@@ -28,10 +28,11 @@ namespace ViewModelTemplate.Controllers
             return View(customerOrders);
         }
 
+        
         public ActionResult getOrderDetails(String ordNo)
         {
             DBRepository dbr = new DBRepository();
-            List <OrderDetails> orderDetails = dbr.getOrderDetailsEF(ordNo);
+            List <OrderDetails> orderDetails = dbr.getOrderDetailsSQL(ordNo);
 
 
             //String message = "Product No: " + orderDetails[0].prodNo + ", Product Name: " + orderDetails[0].product.ProdName;
