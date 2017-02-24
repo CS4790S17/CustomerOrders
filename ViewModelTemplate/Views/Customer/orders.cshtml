@@ -5,27 +5,16 @@
 }
 
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-     data-url='@Url.Action("getOrderDetails"@*, new {ordNo = "21"}*@)'>
-    
-    @*<div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>*@
+
+@*------------------------------------------------------------
+This is the static placeholder modal -- the body gets filled in dynamically by sending an ajax call to the Controller method getOrderDetails()
+The ajax method adds the order number to the url that reaches getOrderDetails()
+------------------------------------------------------------*@
+<div class="modal fade" id="modal_orderDetails" tabindex="-1" role="dialog" aria-labelledby="modal_orderDetails" aria-hidden="true"
+     data-url='@Url.Action("getOrderDetails")'>    
 </div>
+
+
 
 <h2>Customer Orders </h2>
 
@@ -83,25 +72,19 @@
 
 
 <script>
-
-    $(function () {
-
-        
-    });
-
+    
     $("a").click(function () {
         var ordNo = $(this).attr('id').split('_').pop();
 
-        var url = $('#myModal').data('url');
+        var url = $('#modal_orderDetails').data('url');
         url += "?ordNo=" + ordNo;
 
 
         $.get(url,
             function(data) {
-                $('#myModal').html(data);
+                $('#modal_orderDetails').html(data); // data is the Partial View _orderDetails which is the meat of the modal.
 
-
-                $('#myModal').modal('show');
+                $('#modal_orderDetails').modal('show');
             });
 
     });

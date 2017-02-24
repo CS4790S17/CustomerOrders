@@ -90,9 +90,6 @@ namespace ViewModelTemplate.Models
                         quantity = (int)ordLine.Qty
                     });
                 }
-                //customerOrders.customer = db.customers.Find(custNo);
-                //var query = (from ot in db.orders where ot.CustNo == custNo select ot);
-                //customerOrders.orders = query.ToList();
             } catch (Exception ex) { Console.WriteLine(ex.Message); }
 
             return orderDetails;
@@ -135,16 +132,6 @@ namespace ViewModelTemplate.Models
                         quantity = (int)ordLine.Qty
                     });
                 }
-
-               
-
-                //customerOrders.customer =
-                //    db.customers.SqlQuery(sql, sqlParams.ToArray()).First();
-                //sqlParams.Clear();
-                //sqlParams.Add(new SqlParameter("@CustNo", custNo));
-                //sql = "SELECT * FROM OrderTbl WHERE CustNo = @CustNo";
-                //customerOrders.orders =
-                //    db.orders.SqlQuery(sql, sqlParams.ToArray()).ToList();
             } catch (Exception ex) { Console.WriteLine(ex.Message); }
             return orderDetails;
         }
