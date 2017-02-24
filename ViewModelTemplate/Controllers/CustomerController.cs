@@ -27,5 +27,13 @@ namespace ViewModelTemplate.Controllers
             return View(customerOrders);
         }
 
+        public ActionResult orderDetails(string id)
+        {
+            DBRepository dbr = new DBRepository();
+            OrderDetails orderDetails = dbr.getOrderDetailsSQL(id);
+
+            return View(orderDetails);
+        }
+
     }
 }

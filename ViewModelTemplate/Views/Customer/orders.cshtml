@@ -19,11 +19,12 @@
         @Html.DisplayFor(model => model.customer.CustZip)
     </div>
     <div class="col-md-9">
-        <table>
+        <table class="table">
             <tr>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdNo)</th>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdDate)</th>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdName)</th>
+                <th></th>
             </tr>
             @foreach (var item in Model.orders)
             {
@@ -38,6 +39,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
+                    </td>
+                    <td>
+                        <button onclick="location.href='@Url.Action("orderDetails", "customer", new {id = item.OrdNo })';return false;">Details</button>
                     </td>
                 </tr>
             }

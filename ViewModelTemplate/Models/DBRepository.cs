@@ -73,7 +73,7 @@ namespace ViewModelTemplate.Models
 
             try
             {
-                string sql = "SELECT * FROM Order WHERE OrdNo = @OrdNo";
+                string sql = "SELECT * FROM OrderTbl WHERE OrdNo = @OrdNo";
                 orderDetails.order =
                     db.orders.SqlQuery(sql, sqlParams.ToArray()).First();
 
@@ -85,7 +85,7 @@ namespace ViewModelTemplate.Models
                         ON ot.OrdNo = ol.OrdNo 
                         INNER JOIN Product AS p 
                         ON ol.ProdNo = p.ProdNo 
-                        WHERE ot.OrdNo = = @OrdNo";
+                        WHERE ot.OrdNo = @OrdNo";
                 orderDetails.orderItems =
                     db.Database.SqlQuery<OrderDetails.OrderItem>(sql, sqlParams.ToArray()).ToList();
             }
