@@ -1,7 +1,11 @@
 ﻿@model ViewModelTemplate.Models.OrderDetails
 
+@{ 
+    Layout = "";
+}
+
 @Html.DisplayNameFor(model => model.order.OrdNo):  @Html.DisplayFor(model => model.order.OrdNo)
-<table class="table">
+<table class="table-sm">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.orderItems.FirstOrDefault().ProdName)

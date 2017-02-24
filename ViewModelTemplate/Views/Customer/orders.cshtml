@@ -18,7 +18,7 @@
         @Html.DisplayFor(model => model.customer.CustState) 
         @Html.DisplayFor(model => model.customer.CustZip)
     </div>
-    <div class="col-md-9">
+    <div class="col-md-5">
         <table class="table">
             <tr>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdNo)</th>
@@ -28,29 +28,45 @@
             </tr>
             @foreach (var item in Model.orders)
             {
-                <tr>
+                <tr id="@item.OrdNo">
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdNo)
                     </td>
-                    <td>@{ 
-                        var shortDate = item.OrdDate.ToShortDateString();
-                    }
-                        @shortDate
+                    <td>
+                        @Html.DisplayFor(Modelitem => item.OrdDate)
                     </td>
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
                     </td>
                     <td>
-                        <button onclick="location.href='@Url.Action("orderDetails", "customer", new {id = item.OrdNo })';return false;">Details</button>
+                        <button onclick="loadDetails('@item.OrdNo', '@Url.Action("orderDetails", "customer", new { id = item.OrdNo })')">Details</button>
                     </td>
                 </tr>
             }
         </table>
     </div>
-    
+    <div class="col-md-4" id="orderDetails"></div>
 </div>
 <p>
     <br/>
     @*Html.ActionLink("Edit", "Edit", new { id = Model.custNo }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
+@section Styles {
+<style>
+    .table-active {
+        background-color: rgba(0,0,0,.075);
+    }
+</style>
+}
+
+@section Scripts {
+<script type="text/javascript">
+    function loadDetails(id, url) {
+        console.log(id)
+        $("#" + id).addClass('table-active').siblings().removeClass('table-active');
+        $('#orderDetails').load(url); 
+        return false;
+    }
+</script>
+}
