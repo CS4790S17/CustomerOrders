@@ -18,6 +18,7 @@ namespace ViewModelTemplate.Controllers
 
         public ActionResult orders(string id)
         {
+            Console.WriteLine(id); 
             DBRepository dbr = new DBRepository();
             CustomerOrders customerOrders = dbr.getCustomerOrdersEF(id);
             /*** or use SQL 
@@ -25,6 +26,37 @@ namespace ViewModelTemplate.Controllers
             /***/
 
             return View(customerOrders);
+        }
+
+
+        /*     public PartialViewResult orderDetails(string id)
+               {
+                   DBRepository dbr = new DBRepository();
+                  List<OrderDetail> orderDetails = dbr.getOrderDetails(id);
+
+                  return PartialView("_OrderDetail",orderDetails);
+
+               }
+
+             public ActionResult orderDetails(string id)
+            {
+                DBRepository dbr = new DBRepository();
+                List<OrderDetail> orderDetails = dbr.getOrderDetails(id);
+
+                return PartialView("_OrderDetail", orderDetails);
+
+            }
+       */
+       
+        public PartialViewResult orderDetails(string id)
+        {
+            DBRepository dbr = new DBRepository();
+            List<OrderDetail> orderDetails = dbr.getOrderDetails(id);
+
+            return PartialView("_OrderDetail", orderDetails);
+           
+
+
         }
 
     }

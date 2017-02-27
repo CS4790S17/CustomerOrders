@@ -13,6 +13,8 @@ namespace ViewModelTemplate
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+
+
             routes.MapRoute(
                 name: "customerList",
                 url: "customer",

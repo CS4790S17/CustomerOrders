@@ -2,7 +2,47 @@
 
 @{
     ViewBag.Title = "orders";
+
 }
+<style>
+
+    /*.orddet{
+        visibility: hidden;
+        
+        
+
+    }*/
+</style>
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+                            $(document).ready(function()
+                            {
+                                $(".btnShowCustomer").click(function () {
+                                        alert('button clicked');
+                                       // $(".orddet").toggle("visiblity");
+                                        var customerId = $(".btnShowCustomer").attr("data-customerNumber");
+                                        alert(customerId);
+                                        $.ajax({
+                                            type: "GET",
+                                            data:  customerID,
+                                        
+                                            success: function (data) {
+                                                alert(data);
+                                               
+                                                $("#toUpdate").replaceAll( data.customerID );
+                                            }
+                                        });
+
+
+                                        }
+                                     );
+                            });
+</script>
+
+
+
 
 <h2>Customer Orders</h2>
 
@@ -39,14 +79,63 @@
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
                     </td>
+                    <td>
+                        @*@Html.ActionLink("Details", "orderDetails", new {id = item.OrdNo})*@
+                        
+                        @*<input type="button" id="button" value="Details" />*@
+
+                        
+                        @*<input class="btnShowCustomer" data-customerNumber="@item.OrdNo" value="Details" type="button"/>*@
+
+                        @Ajax.ActionLink("Details", "orderDetails", new { id = item.OrdNo }, new AjaxOptions { UpdateTargetId = "toUpdate", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })
+                        
+                        
+                        
+                         @*<div class="orddet" style="display: none;">
+                            @Html.Action("orderDetails", new { id = item.OrdNo })
+                        </div>*@
+                       
+                        @*@Html.ActionLink("View Orders", "Orders", new { id = item.CustNo })*@
+                        @*@Html.RenderPartial(orderDetails", new { id = item.OrdNo })*@ 
+                        @*@Html.Partial("_OrderDetail", item)*@ 
+                       
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Details", "orderDetails", new {id = item.OrdNo})*@
+
+                        @*<input type="button" name="button" id="button" value="Details" />*@
+                        
+                        
+                        @*
+                                 <div class="orddet" style="display: none;">
+                                     @Html.Action("orderDetails", new { id = item.OrdNo })
+                                  </div>
+
+                        *@
+
+                        @*@Html.ActionLink("View Orders", "Orders", new { id = item.CustNo })*@
+                        @*@Html.RenderPartial(orderDetails", new { id = item.OrdNo })*@
+                        @*@Html.Partial("_OrderDetail", item)*@
+
+                    </td>
+
                 </tr>
-            }
+                        }
         </table>
     </div>
     
 </div>
+
+<div id="toUpdate">
+
+</div>
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+}
 <p>
     <br/>
     @*Html.ActionLink("Edit", "Edit", new { id = Model.custNo }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
