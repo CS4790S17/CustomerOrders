@@ -24,6 +24,7 @@
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdNo)</th>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdDate)</th>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdName)</th>
+                <th></th>
             </tr>
             @foreach (var item in Model.orders)
             {
@@ -31,7 +32,7 @@
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdNo)
                     </td>
-                    <td>@{ 
+                    <td>@{
                         var shortDate = item.OrdDate.ToShortDateString();
                     }
                         @shortDate
@@ -39,9 +40,50 @@
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
                     </td>
+                    <td>
+                        <button class="btn btn-default" onclick="filterOrderDetails('@Html.DisplayTextFor(Modelitem => item.OrdNo)')">Details</button>
+                    </td>
                 </tr>
             }
         </table>
+        <br />
+
+        <style>
+            .order-detail {
+                display: none;
+            }
+        </style>
+
+        @* These style elements need to be separate for the hiding/showing to work properly. *@
+        <style id="order-detail-style">
+            #order-details {
+                display: none;
+            }
+        </style>
+
+        <div class="col-md-9" id="order-details">
+            <h3 id="order-details-ordno"></h3>
+            <table>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.orderDetails[0].ProdName)</th>
+                    <th>@Html.DisplayNameFor(model => model.orderDetails[0].Qty)</th>
+                    <th>@Html.DisplayNameFor(model => model.orderDetails[0].ProdPrice)</th>
+                </tr>
+                @foreach (var item in Model.orderDetails) {
+                    <tr class="order-detail order-detail-@Html.DisplayTextFor(Modelitem => item.OrdNo)">
+                        <td>
+                            @Html.DisplayFor(Modelitem => item.ProdName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Modelitem => item.Qty)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(Modelitem => item.ProdPrice)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
     
 </div>
@@ -50,3 +92,12 @@
     @*Html.ActionLink("Edit", "Edit", new { id = Model.custNo }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<script type="text/javascript">
+    const filterOrderDetails = ordNo => {
+        document.querySelector('#order-detail-style')
+            .innerHTML = `.order-detail-${ordNo} \{ display: table-row; \}`;
+        document.querySelector('#order-details-ordno')
+            .innerHTML = `Order № ${ordNo}`;
+    }
+</script>

@@ -35,6 +35,7 @@ namespace ViewModelTemplate.Models
                 customerOrders.customer = db.customers.Find(custNo);
                 var query = (from ot in db.orders where ot.CustNo == custNo select ot);
                 customerOrders.orders = query.ToList();
+                customerOrders.orderDetails = getOrderDetailsEF(custNo);
             } catch (Exception ex) { Console.WriteLine(ex.Message); }
 
             return customerOrders;
@@ -62,7 +63,46 @@ namespace ViewModelTemplate.Models
             } catch (Exception ex) { Console.WriteLine(ex.Message); }
             return customerOrders;
         }
+
+        /*
+         * SELECT ot.OrdNo, p.ProdName, ol.Qty, p.ProdPrice
+         * FROM OrderTbl ot
+         * JOIN OrdLine ol ON ot.OrdNo = ol.OrdNo
+         * JOIN Product p ON ol.ProdNo = p.ProdNo
+         * WHERE CustNo = 'C0954327';
+         */
+
+        /***** Use EF to get the customer orders *****/
+        public List<OrderDetail> getOrderDetailsEF(string custNo) {
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            OrderEntryDbContext db = new OrderEntryDbContext();
+            try {
+                var query = (
+                    from ot in db.orders
+                    join ol in db.orderLines on ot.OrdNo equals ol.OrdNo
+                    join p in db.products on ol.ProdNo equals p.ProdNo
+                    where ot.CustNo == custNo
+                    select new { OrdNo = ot.OrdNo, ProdName = p.ProdName, Qty = ol.Qty, ProdPrice = p.ProdPrice }
+                );
+
+                foreach (var x in query) {
+                    OrderDetail item = new OrderDetail();
+                    item.OrdNo = x.OrdNo;
+                    item.ProdName = x.ProdName;
+                    item.Qty = x.Qty;
+                    item.ProdPrice = x.ProdPrice;
+                    orderDetails.Add(item);
+                    Console.WriteLine(orderDetails.Count);
+                }
+
+                //orderDetails = query.ToList().Select(x => new OrderDetail { OrdNo = x.OrdNo, ProdName = x.ProdName, Qty = x.Qty, ProdPrice = x.ProdPrice });
+                //orderDetails = query.ToList();
+            } catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+            return orderDetails;
+        }
     }
+
     /***************** View Models **********************/
 
     public class CustomerOrders
@@ -71,12 +111,36 @@ namespace ViewModelTemplate.Models
         {
             this.customer = new Customer();
             this.orders = new List<OrderTbl>();
+            this.orderDetails = new List<OrderDetail>();
         }
 
         [Key]
         public string custNo { get; set; }
         public Customer customer { get; set; }
         public List<OrderTbl> orders { get; set; }
+        public List<OrderDetail> orderDetails { get; set; }
+    }
+
+    public class OrderDetail {
+        /*public OrderDetail(string ordNo, string prodName, int? qty, decimal? prodPrice) {
+            OrdNo = ordNo;
+            ProdName = prodName;
+            Qty = qty;
+            ProdPrice = prodPrice;
+        }*/
+
+        [Key]
+        [Display(Name = "Order Number")]
+        public string OrdNo { get; set; }
+
+        [Display(Name = "Product")]
+        public string ProdName { get; set; }
+
+        [Display(Name = "Qty")]
+        public int? Qty { get; set; }
+
+        [Display(Name = "Price")]
+        public decimal? ProdPrice { get; set; }
     }
 
 }
