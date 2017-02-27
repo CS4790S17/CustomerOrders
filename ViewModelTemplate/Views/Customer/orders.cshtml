@@ -11,7 +11,7 @@ This is the static placeholder modal -- the body gets filled in dynamically by s
 The ajax method adds the order number to the url that reaches getOrderDetails()
 ------------------------------------------------------------*@
 <div class="modal fade" id="modal_orderDetails" tabindex="-1" role="dialog" aria-labelledby="modal_orderDetails" aria-hidden="true"
-     data-url='@Url.Action("getOrderDetails")'>    
+     @*data-url='@Url.Action("getOrderDetails")'*@>    
 </div>
 
 
@@ -76,9 +76,13 @@ The ajax method adds the order number to the url that reaches getOrderDetails()
     $("a").click(function () {
         var ordNo = $(this).attr('id').split('_').pop();
 
-        var url = $('#modal_orderDetails').data('url');
+        //var url = $('#modal_orderDetails').data('url');
+
+        var url = '/Customer/getOrderDetails';
         url += "?ordNo=" + ordNo;
 
+        //    console.log(url);
+        //   /Customer/getOrderDetails?ordNo=O2334661
 
         $.get(url,
             function(data) {
@@ -87,5 +91,25 @@ The ajax method adds the order number to the url that reaches getOrderDetails()
                 $('#modal_orderDetails').modal('show');
             });
 
+        //**************************************************************************************
+        //This way also works...
+        //$('#modal_orderDetails').load("/Customer/getOrderDetails", { ordNo: ordNo });
+        //$('#modal_orderDetails').modal('show');
+        //**************************************************************************************
+
+
     });
+
+
+    // the .get() function is shorthand for the .ajax() function shown commented below:
+
+    //$.ajax({
+    //    url: url,
+    //    success: function(data) {
+    //        $('#modal_orderDetails').html(data); // data is the Partial View _orderDetails which is the meat of the modal.
+
+    //        $('#modal_orderDetails').modal('show');
+    //    }
+    //});
+
 </script>
