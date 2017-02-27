@@ -11,7 +11,7 @@ namespace ViewModelTemplate.Models
 {
     public class DBRepository
     {
-      /*************  Repository Methods ******************/
+        /*************  Repository Methods ******************/
 
         public List<Customer> getCustomers()
         {
@@ -20,7 +20,8 @@ namespace ViewModelTemplate.Models
             try
             {
                 customers = db.customers.ToList();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             { Console.WriteLine(ex.Message); }
             return customers;
         }
@@ -35,7 +36,8 @@ namespace ViewModelTemplate.Models
                 customerOrders.customer = db.customers.Find(custNo);
                 var query = (from ot in db.orders where ot.CustNo == custNo select ot);
                 customerOrders.orders = query.ToList();
-            } catch (Exception ex) { Console.WriteLine(ex.Message); }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
 
             return customerOrders;
         }
@@ -59,24 +61,88 @@ namespace ViewModelTemplate.Models
                 sql = "SELECT * FROM OrderTbl WHERE CustNo = @CustNo";
                 customerOrders.orders =
                     db.orders.SqlQuery(sql, sqlParams.ToArray()).ToList();
-            } catch (Exception ex) { Console.WriteLine(ex.Message); }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
             return customerOrders;
         }
-    }
-    /***************** View Models **********************/
 
-    public class CustomerOrders
-    {
-        public CustomerOrders()
+
+        //public OrderDetails getOrderDetails(string ordNo)
+        //{
+        //    OrderDetails orderDetails = new OrderDetails();
+        //    OrderEntryDbContext db = new OrderEntryDbContext();
+        //    List<SqlParameter> sqlParams = new List<SqlParameter>();
+        //    sqlParams.Add(new SqlParameter("@ordNo", ordNo));
+
+        //    try
+        //    {
+        //        string sql = "SELECT * FROM OrdLine WHERE ordNo = @ordNo";
+        //        orderDetails.orderLine = db.orderLines.SqlQuery(sql, sqlParams.ToArray()).ToList();                
+
+        //    }
+        //    catch (Exception ex) { Console.WriteLine(ex.Message); }
+        //    return orderDetails;
+        //}
+        
+        public OrderDetails getOrderDetails(string ordNo)
         {
-            this.customer = new Customer();
-            this.orders = new List<OrderTbl>();
+            OrderDetails orderDetails = new OrderDetails();
+
+            OrderEntryDbContext db = new OrderEntryDbContext();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            sqlParams.Add(new SqlParameter("@OrdNo", ordNo));
+            string sql = "SELECT o.OrdNo, l.ProdNo, p.ProdName, l.Qty, p.ProdPrice " +
+            "FROM OrderTbl o INNER JOIN OrdLine l " +
+            " ON o.OrdNo = l.OrdNo " +
+            " INNER JOIN Product p " +
+            " ON l.ProdNo = p.ProdNo " +
+            "WHERE l.OrdNo = @OrdNo;";
+            try
+            {
+                orderDetails.orderDetail =
+                    db.orderDetails.SqlQuery(sql, sqlParams.ToArray()).ToList();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+            return orderDetails;
+        }
+    }
+        /***************** View Models **********************/
+
+        public class CustomerOrders
+        {
+            public CustomerOrders()
+            {
+                this.customer = new Customer();
+                this.orders = new List<OrderTbl>();
+                //this.orderLine = new List<OrdLine>();
+            }
+
+            [Key]
+            public string custNo { get; set; }
+            public Customer customer { get; set; }
+            public List<OrderTbl> orders { get; set; }
+            //public List<OrdLine> orderLine { get; set; }
+            //public string ordNo { get; set; }
         }
 
-        [Key]
-        public string custNo { get; set; }
-        public Customer customer { get; set; }
-        public List<OrderTbl> orders { get; set; }
-    }
+    public class OrderDetails
+    {
+        public OrderDetails()
+        {
+            this.orderLine = new List<OrdLine>();
+            this.products = new List<Product>();
+            this.orderDetail = new List<OrderDetail>();
+        }
 
-}
+        public List<OrdLine> orderLine { get; set; }
+        public List<Product> products { get; set; }
+        public List<OrderDetail> orderDetail { get; set; }
+       
+
+
+    }  
+
+       
+
+    }

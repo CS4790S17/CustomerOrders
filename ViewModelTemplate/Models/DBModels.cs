@@ -61,7 +61,10 @@ namespace ViewModelTemplate.Models
     public class OrdLine
     {
         [Key]
+        [Column(Order = 1)]
         public string OrdNo { get; set; }
+        [Key]
+        [Column(Order = 2)]
         public string ProdNo { get; set; }
         public int? Qty { get; set; }
     }
@@ -78,6 +81,22 @@ namespace ViewModelTemplate.Models
         public DateTime? ProdNextShipDate { get; set; }
     }
 
+    public class OrderDetail
+    {
+        public OrderDetail()
+        {
+        }        
+        [Key]
+        [Column(Order = 1)]
+        public string OrdNo { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        public string ProdNo { get; set; }
+        public string ProdName { get; set; }
+        public int? Qty { get; set; }
+        public decimal? ProdPrice { get; set; }
+    }
+
     public class OrderEntryDbContext : DbContext
     {
         public DbSet<Customer> customers { get; set; }
@@ -85,6 +104,7 @@ namespace ViewModelTemplate.Models
         public DbSet<OrderTbl> orders { get; set; }
         public DbSet<OrdLine> orderLines { get; set; }
         public DbSet<Product> products { get; set; }
+        public DbSet<OrderDetail> orderDetails { get; set; }
 
         public System.Data.Entity.DbSet<ViewModelTemplate.Models.CustomerOrders> CustomerOrders { get; set; }
     }
