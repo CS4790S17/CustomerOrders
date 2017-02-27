@@ -10,8 +10,7 @@
 This is the static placeholder modal -- the body gets filled in dynamically by sending an ajax call to the Controller method getOrderDetails()
 The ajax method adds the order number to the url that reaches getOrderDetails()
 ------------------------------------------------------------*@
-<div class="modal fade" id="modal_orderDetails" tabindex="-1" role="dialog" aria-labelledby="modal_orderDetails" aria-hidden="true"
-     @*data-url='@Url.Action("getOrderDetails")'*@>    
+<div class="modal fade" id="modal_orderDetails" tabindex="-1" role="dialog" aria-labelledby="modal_orderDetails" aria-hidden="true">    
 </div>
 
 
@@ -76,8 +75,6 @@ The ajax method adds the order number to the url that reaches getOrderDetails()
     $("a").click(function () {
         var ordNo = $(this).attr('id').split('_').pop();
 
-        //var url = $('#modal_orderDetails').data('url');
-
         var url = '/Customer/getOrderDetails';
         url += "?ordNo=" + ordNo;
 
@@ -100,7 +97,7 @@ The ajax method adds the order number to the url that reaches getOrderDetails()
 
     });
 
-
+    //**************************************************************************************
     // the .get() function is shorthand for the .ajax() function shown commented below:
 
     //$.ajax({
@@ -111,5 +108,6 @@ The ajax method adds the order number to the url that reaches getOrderDetails()
     //        $('#modal_orderDetails').modal('show');
     //    }
     //});
+    //**************************************************************************************
 
 </script>
