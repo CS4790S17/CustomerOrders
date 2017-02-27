@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ViewModelTemplate.Models.OrderDetail> 
+@{ 
+
+    ViewBag.Title = "Order Details";
+}
+<label>OrderNumber: @Model.ElementAt(0).OrdNo</label>
+
+<div class="col-md-9">
+    
+    <table cellpadding="5" style="border: 3px solid lightgrey;">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.ProdName)</th>
+            <th>@Html.DisplayNameFor(model => model.Qty)</th>
+            <th>@Html.DisplayNameFor(model => model.ProdPrice)</th>
+        </tr>
+        @foreach (var item in Model)
+        {             <tr>
+                <td>
+                    @Html.DisplayFor(Modelitem => item.ProdName)
+                </td>
+                <td>
+                   @Html.DisplayFor(Modelitem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(Modelitem => item.ProdPrice)
+            </td>
+
+        </tr>
+        }
+    </table>
+</div>

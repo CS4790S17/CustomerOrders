@@ -6,6 +6,7 @@ using System.Web;
 using ViewModelTemplate.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ViewModelTemplate.Models
 {
@@ -62,7 +63,41 @@ namespace ViewModelTemplate.Models
             } catch (Exception ex) { Console.WriteLine(ex.Message); }
             return customerOrders;
         }
+        
+        public List<OrderDetail> getOrderDetails(string ordNo)
+        {
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+
+            OrderEntryDbContext db = new OrderEntryDbContext();
+
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            sqlParams.Add(new SqlParameter("@OrdNo", ordNo));
+            string query = "SELECT o.OrdNO, l.ProdNo, p.ProdName, l.Qty, p.ProdPrice " +
+                           "FROM OrderTbl o "+
+                            "JOIN OrdLine l "+
+                            "ON o.OrdNo = l.OrdNo "+
+                            "JOIN Product p "+
+                            "ON l.ProdNo = p.ProdNo "+
+                            "WHERE l.OrdNo = @OrdNo;";
+
+            try
+            {
+                orderDetails = db.OrdDetails.SqlQuery(query, sqlParams.ToArray()).ToList(); 
+            }
+            catch(SqlException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return orderDetails; 
+        }
+
+
     }
+
+
+
+
     /***************** View Models **********************/
 
     public class CustomerOrders
@@ -78,5 +113,30 @@ namespace ViewModelTemplate.Models
         public Customer customer { get; set; }
         public List<OrderTbl> orders { get; set; }
     }
+    public class OrderDetail
+    {
+        public OrderDetail()
+        {
+
+        }
+
+        //[Key]
+        //[Column(Order = 1)]
+        //public string CustNo { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        public string OrdNo { get; set; }
+
+        [Key]
+        [Column(Order = 3)]
+        public string ProdNo { get; set; }
+        public string ProdName { get; set; }
+        public int? Qty { get; set; }
+        public decimal? ProdPrice { get; set; }
+
+
+    }
 
 }
+
