@@ -22,9 +22,18 @@ namespace ViewModelTemplate.Controllers
             CustomerOrders customerOrders = dbr.getCustomerOrdersEF(id);
             /*** or use SQL 
             CustomerOrders customerOrders = dbr.getCustomerOrdersSQL(id);
-            /***/
+            /***/            
 
             return View(customerOrders);
+        }
+
+        public ActionResult details(string id)
+        {
+            DBRepository dbr = new DBRepository();
+            OrderDetails orderDetails = dbr.getOrderDetails(id);
+
+            //return View(orderDetails);
+            return PartialView("details", orderDetails);
         }
 
     }

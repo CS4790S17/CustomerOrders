@@ -1,0 +1,37 @@
+﻿@model ViewModelTemplate.Models.OrderDetails
+
+@{
+    ViewBag.Title = "details";
+ }
+
+<table>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.orderDetail[0].ProdName)</th>
+        <th>@Html.DisplayNameFor(model => model.orderLine[0].Qty)</th>
+        <th>@Html.DisplayNameFor(model => model.orderDetail[0].ProdPrice)</th>
+    </tr>
+
+    @foreach (var item in Model.orderDetail)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProdName)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Qty)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.ProdPrice)
+        </td>
+     </tr>
+
+    }
+    
+</table>
+
+<p>
+    @Html.ActionLink("Back to List", "orders")
+</p>
+

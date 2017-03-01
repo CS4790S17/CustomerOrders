@@ -4,6 +4,19 @@
     ViewBag.Title = "orders";
 }
 
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/themes/base/css")
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/jqueryui")
+
+<script type="text/javascript">
+    function showDetails() {
+        $("#details").load("/Customer/details", { ordNo: ordNo });
+    }
+</script>
+
 <h2>Customer Orders</h2>
 
 <div class="container">
@@ -18,7 +31,7 @@
         @Html.DisplayFor(model => model.customer.CustState) 
         @Html.DisplayFor(model => model.customer.CustZip)
     </div>
-    <div class="col-md-9">
+    <div class="col-md-6">
         <table>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdNo)</th>
@@ -39,11 +52,22 @@
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
                     </td>
+                    <td>
+                        @*<Button type="button" class="btn btn-info" onClick="showDetails()">Order Details</Button>*@
+                       @Html.ActionLink("Details", "details", new { id = item.OrdNo }) 
+                                                        
+                    </td>                    
                 </tr>
             }
         </table>
     </div>
-    
+        <div class="col-md-3">
+                <div class="container" id="details">                   
+                    @*<Button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Order Details</Button>
+                    <div id="demo" class="collapse"> Order details here </div>*@
+                </div>
+            </div>
+
 </div>
 <p>
     <br/>
