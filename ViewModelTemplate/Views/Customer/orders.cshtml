@@ -47,11 +47,9 @@
         </table>
     </div>
     <div style="float:left; width:40%">
+        <div id="orderNoHeader"></div>
         <table class="table showDetails" hidden="hidden">
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.details[0].OrdNo)
-                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.details[0].ProdName)
                 </th>
@@ -66,9 +64,6 @@
             @foreach (var item in Model.details)
             {
                 <tr class="orderData @item.OrdNo" hidden="hidden">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrdNo)
-                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ProdName)
                     </td>
@@ -92,6 +87,7 @@
     function loadDetails(order)
     {
         var ordNo = $(order).data('assigned-id');
+        $('#orderNoHeader').html("Order Details for: <strong>" + ordNo + "</strong>");
         $('.showDetails').show();
         $('.orderData').hide();
         $('.'+ordNo).show();
