@@ -85,6 +85,7 @@ namespace ViewModelTemplate.Models
         public DbSet<OrderTbl> orders { get; set; }
         public DbSet<OrdLine> orderLines { get; set; }
         public DbSet<Product> products { get; set; }
+        public DbSet<OrderDetail> details { get; set; }
 
         public System.Data.Entity.DbSet<ViewModelTemplate.Models.CustomerOrders> CustomerOrders { get; set; }
     }

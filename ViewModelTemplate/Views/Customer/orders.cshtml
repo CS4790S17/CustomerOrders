@@ -7,7 +7,7 @@
 <h2>Customer Orders</h2>
 
 <div class="container">
-    <div class="col-md-3">
+    <div style="float:left; width:20%">
         <span style="font-weight:bold">Customer</span><br/><br/>
         @Html.DisplayFor(model => model.customer.CustFirstName) 
         @Html.DisplayFor(model => model.customer.CustLastName)
@@ -18,7 +18,7 @@
         @Html.DisplayFor(model => model.customer.CustState) 
         @Html.DisplayFor(model => model.customer.CustZip)
     </div>
-    <div class="col-md-9">
+    <div style="float:left; width:40%">
         <table>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdNo)</th>
@@ -35,18 +35,65 @@
                         var shortDate = item.OrdDate.ToShortDateString();
                     }
                         @shortDate
-                    </td>
+                    </td> 
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
+                    </td>
+                    <td>
+                        <input type="button" value="View Details" onclick="loadDetails(this)" data-assigned-id="@item.OrdNo"/>
                     </td>
                 </tr>
             }
         </table>
     </div>
-    
+    <div style="float:left; width:40%">
+        <table class="table showDetails" hidden="hidden">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.details[0].OrdNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.details[0].ProdName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.details[0].Qty)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.details[0].ProdPrice)
+                </th>
+            </tr>
+
+            @foreach (var item in Model.details)
+            {
+                <tr class="orderData @item.OrdNo" hidden="hidden">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrdNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProdName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Qty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProdPrice)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
 </div>
 <p>
     <br/>
     @*Html.ActionLink("Edit", "Edit", new { id = Model.custNo }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
+<script>
+    function loadDetails(order)
+    {
+        var ordNo = $(order).data('assigned-id');
+        $('.showDetails').show();
+        $('.orderData').hide();
+        $('.'+ordNo).show();
+    }
+</script>
