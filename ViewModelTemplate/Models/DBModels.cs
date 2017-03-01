@@ -33,7 +33,9 @@ namespace ViewModelTemplate.Models
         [Key]
         [Display(Name ="Order Number")]
         public string OrdNo { get; set; }
+
         [Display(Name = "Order Date")]
+        [DataType(DataType.Date)]
         public DateTime OrdDate { get; set; }
         public string CustNo { get; set; }
         public string EmpNo { get; set; }

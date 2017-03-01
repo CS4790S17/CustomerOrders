@@ -1,0 +1,35 @@
+﻿@model ViewModelTemplate.Models.OrderDetails
+
+@{ 
+    Layout = "";
+}
+
+@Html.DisplayNameFor(model => model.order.OrdNo):  @Html.DisplayFor(model => model.order.OrdNo)
+<table class="table-sm">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.orderItems.FirstOrDefault().ProdName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orderItems.FirstOrDefault().Qty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orderItems.FirstOrDefault().ProdPrice)
+        </th>
+    </tr>
+
+@foreach (var item in Model.orderItems) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProdName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Qty)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProdPrice)
+        </td>
+    </tr>
+}
+
+</table>

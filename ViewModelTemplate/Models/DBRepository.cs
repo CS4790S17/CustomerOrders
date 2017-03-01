@@ -62,6 +62,36 @@ namespace ViewModelTemplate.Models
             } catch (Exception ex) { Console.WriteLine(ex.Message); }
             return customerOrders;
         }
+
+        /***** Use SQL to get the customer orders *****/
+        public OrderDetails getOrderDetailsSQL(string ordNo)
+        {
+            OrderDetails orderDetails = new OrderDetails();
+            OrderEntryDbContext db = new OrderEntryDbContext();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            sqlParams.Add(new SqlParameter("@OrdNo", ordNo));
+
+            try
+            {
+                string sql = "SELECT * FROM OrderTbl WHERE OrdNo = @OrdNo";
+                orderDetails.order =
+                    db.orders.SqlQuery(sql, sqlParams.ToArray()).First();
+
+                sqlParams.Clear();
+                sqlParams.Add(new SqlParameter("@OrdNo", ordNo));
+                sql = @"SELECT ot.OrdNo, p.ProdName, ol.Qty, p.ProdPrice 
+                        FROM OrderTbl AS ot 
+                        INNER JOIN OrdLine AS ol 
+                        ON ot.OrdNo = ol.OrdNo 
+                        INNER JOIN Product AS p 
+                        ON ol.ProdNo = p.ProdNo 
+                        WHERE ot.OrdNo = @OrdNo";
+                orderDetails.orderItems =
+                    db.Database.SqlQuery<OrderDetails.OrderItem>(sql, sqlParams.ToArray()).ToList();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            return orderDetails;
+        }
     }
     /***************** View Models **********************/
 
@@ -77,6 +107,20 @@ namespace ViewModelTemplate.Models
         public string custNo { get; set; }
         public Customer customer { get; set; }
         public List<OrderTbl> orders { get; set; }
+    }
+
+
+    public class OrderDetails
+    {
+        public OrderTbl order { get; set; }
+        public List<OrderItem> orderItems { get; set; }
+
+        public class OrderItem
+        {
+            public string ProdName { get; set; }
+            public int? Qty { get; set; }
+            public decimal? ProdPrice { get; set; }
+        }
     }
 
 }
