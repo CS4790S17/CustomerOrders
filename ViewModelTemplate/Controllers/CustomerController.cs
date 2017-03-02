@@ -19,12 +19,23 @@ namespace ViewModelTemplate.Controllers
         public ActionResult orders(string id)
         {
             DBRepository dbr = new DBRepository();
-            CustomerOrders customerOrders = dbr.getCustomerOrdersEF(id);
-            /*** or use SQL 
+           // CustomerOrders customerOrders = dbr.getCustomerOrdersEF(id);
+       //     /*** or use SQL 
             CustomerOrders customerOrders = dbr.getCustomerOrdersSQL(id);
-            /***/
+       //     /***/
 
             return View(customerOrders);
+        }
+        public PartialViewResult ordersDetails(string OrdNo)
+        {
+            DBRepository dbr = new DBRepository();
+            
+        //    CustomerOrders customerOrders = dbr.getCustomerOrdersEF(id);
+        //    /*** or use SQL 
+            List<OrderDetail> orderDetails = dbr.getOrderDetails(OrdNo);
+            //    /***/
+
+            return PartialView("ordersDetails", orderDetails);
         }
 
     }
