@@ -1,5 +1,15 @@
 ﻿@model ViewModelTemplate.Models.CustomerOrders
-
+@section Scripts{
+    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $(".butt").click(function (evt) {
+                                var cell = $(evt.target).closest("tr").children().first();
+                                var OrdNo = cell.text().replace(/(^\s+|\s+$)/g, '');
+                                $("#partview").load("/Customer/ordersDetails", { ordNo: OrdNo });
+                            });
+                        });
+    </script>
+}
 @{
     ViewBag.Title = "orders";
 }
@@ -39,11 +49,15 @@
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
                     </td>
+                    <td>
+                        <button class="butt">Details</button>
+                    </td>
                 </tr>
             }
         </table>
+        <div id="partview"></div>
     </div>
-    
+   
 </div>
 <p>
     <br/>
