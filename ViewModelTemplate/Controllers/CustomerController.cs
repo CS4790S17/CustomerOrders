@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ViewModelTemplate.Models;
@@ -25,6 +26,16 @@ namespace ViewModelTemplate.Controllers
             /***/
 
             return View(customerOrders);
+        }
+
+        
+        public ActionResult getOrderDetails(String ordNo)
+        {
+            DBRepository dbr = new DBRepository();
+            List <OrderDetails> orderDetails = dbr.getOrderDetailsEF(ordNo);
+            
+            return PartialView("_orderDetails", orderDetails);
+
         }
 
     }

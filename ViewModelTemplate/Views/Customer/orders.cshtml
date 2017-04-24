@@ -4,7 +4,18 @@
     ViewBag.Title = "orders";
 }
 
-<h2>Customer Orders</h2>
+
+
+@*------------------------------------------------------------
+This is the static placeholder modal -- the body gets filled in dynamically by sending an ajax call to the Controller method getOrderDetails()
+The ajax method adds the order number to the url that reaches getOrderDetails()
+------------------------------------------------------------*@
+<div class="modal fade" id="modal_orderDetails" tabindex="-1" role="dialog" aria-labelledby="modal_orderDetails" aria-hidden="true">    
+</div>
+
+
+
+<h2>Customer Orders </h2>
 
 <div class="container">
     <div class="col-md-3">
@@ -24,6 +35,7 @@
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdNo)</th>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdDate)</th>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdName)</th>
+                <th></th>
             </tr>
             @foreach (var item in Model.orders)
             {
@@ -39,6 +51,10 @@
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
                     </td>
+                    <td>
+                        <a style="cursor:pointer" id="a_showOrdDetails_@item.OrdNo">View Details</a>
+                        @*<button class="btn btn-default btn-sm" id="btn_showOrdDetails_@item.OrdNo">View Details</button>*@
+                    </td>
                 </tr>
             }
         </table>
@@ -50,3 +66,48 @@
     @*Html.ActionLink("Edit", "Edit", new { id = Model.custNo }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+
+<script>
+    
+    $("a").click(function () {
+        var ordNo = $(this).attr('id').split('_').pop();
+
+        var url = '/Customer/getOrderDetails';
+        url += "?ordNo=" + ordNo;
+
+        //    console.log(url);
+        //   /Customer/getOrderDetails?ordNo=O2334661
+
+        $.get(url,
+            function(data) {
+                $('#modal_orderDetails').html(data); // data is the Partial View _orderDetails which is the meat of the modal.
+
+                $('#modal_orderDetails').modal('show');
+            });
+
+        //**************************************************************************************
+        //This way also works...
+        //$('#modal_orderDetails').load("/Customer/getOrderDetails", { ordNo: ordNo });
+        //$('#modal_orderDetails').modal('show');
+        //**************************************************************************************
+
+
+    });
+
+    //**************************************************************************************
+    // the .get() function is shorthand for the .ajax() function shown commented below:
+
+    //$.ajax({
+    //    url: url,
+    //    success: function(data) {
+    //        $('#modal_orderDetails').html(data); // data is the Partial View _orderDetails which is the meat of the modal.
+
+    //        $('#modal_orderDetails').modal('show');
+    //    }
+    //});
+    //**************************************************************************************
+
+</script>
+
+@*http://stackoverflow.com/questions/1830927/how-do-i-make-a-link-that-goes-no-where*@

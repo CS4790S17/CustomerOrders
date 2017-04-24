@@ -1,0 +1,48 @@
+﻿@using ViewModelTemplate.Models
+@model List<ViewModelTemplate.Models.OrderDetails>
+
+
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">                
+                <span aria-hidden="true"> &times;</span>
+            </button>
+            
+
+            <h4 class="modal-title">Order Details for @Model[0].ordNo</h4>
+
+        </div>
+        <div class="modal-body">
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th colspan="2" style="text-align: right">Product Price</th>  @*colspan=2 for spacing*@
+                    <th style="text-align: center">Quantity Ordered</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (OrderDetails orderDetail in Model)
+                {
+                    <tr>
+                        <td>@orderDetail.product.ProdName</td>
+                        <td style="text-align: right">$@orderDetail.product.ProdPrice</td>
+                        <td></td>  @*for spacing*@
+                        <td style="text-align: center">@orderDetail.quantity</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
